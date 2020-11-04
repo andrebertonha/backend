@@ -56,6 +56,7 @@ function validateProjectId(req, res, next) {
 }
 
 app.use(logRequests);
+app.use('/projects/:id', validateProjectId)
 
 app.get('/projects', (request, response) => { 
     const { title } = request.query;
@@ -77,7 +78,7 @@ app.post('/projects', (req, res) => {
     return res.json(project);
 });
 
-app.put('/projects/:id', validateProjectId, (req, res) => {
+app.put('/projects/:id', (req, res) => {
 
     const { id } = req.params;
     const { title, owner } = req.body;
@@ -99,7 +100,7 @@ app.put('/projects/:id', validateProjectId, (req, res) => {
     return res.json(project);
 });
 
-app.delete('/projects/:id', validateProjectId, (req, res) => {
+app.delete('/projects/:id', (req, res) => {
 
     const { id } = req.params;
 
