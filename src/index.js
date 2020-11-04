@@ -18,7 +18,7 @@ app.get('/projects', (request, response) => {
  });
 
 app.post('/projects', (req, res) => {
-    return response.json([
+    return res.json([
         'Projeto 1',
         'Projeto 2',
         'Projeto 3'
@@ -27,7 +27,7 @@ app.post('/projects', (req, res) => {
 
 app.put('/projects/:id', (req, res) => {
 
-    return response.json([
+    return res.json([
         'Projeto 4',
         'Projeto 2',
         'Projeto 3',
@@ -36,7 +36,7 @@ app.put('/projects/:id', (req, res) => {
 
 app.delete('/projects/:id', (req, res) => {
 
-    return response.json([
+    return res.json([
         'Projeto 2',
         'Projeto 3',
     ]);
