@@ -1,5 +1,4 @@
-# goStack: last released for me
-
+# goStack: last released 
 ## Training and keep updated
 ### reach a job
 
