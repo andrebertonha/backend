@@ -1,13 +1,15 @@
 const express = require('express');
-const { uuid } = require('uuidv4')
+const { uuid, isUuid } = require('uuidv4')
 
 const app = express();
 
 // add function to routes have to be before the routes
 app.use(express.json());
 
+/** CONCEITOS */
+
 /**
-    Metodos http
+    Metodos HTTP
     get: buscar info do backend
     post: criar uma info no backend
     put/patch: editar info backend / patch seria para alguma alteração de info específica
@@ -15,14 +17,45 @@ app.use(express.json());
  */
 
  /**
-    tipos de parametros
+    tipos de Parametros
 
     query params: filtros e paginação (principalmente)
     route params: identificar recursos na hora de atualizar ou deletar 
     request body: Conteudo na hora de criar ou editar um recurso
   */
 
+/**
+    Middleware: 
+    - interceptador de requisições: interromper totalmente a requisição
+    - alterar dados da requisição
+ */
+
 const projects = [];
+
+// middleware
+function logRequests(req, res, next) {
+    const { method, url } = req;
+
+    const logLabel = `[${method.toUpperCase()}] ${url}`;
+
+    console.time(logLabel);
+
+    next();
+
+    console.timeEnd(logLabel);
+}
+
+function validateProjectId(req, res, next) {
+    const { id } = req.params;
+
+    if(!isUuid(id)) {
+        return res.status(400).json({ error: 'Invalid id project' });
+    }
+
+    return next();
+}
+
+app.use(logRequests);
 
 app.get('/projects', (request, response) => { 
     const { title } = request.query;
@@ -44,7 +77,7 @@ app.post('/projects', (req, res) => {
     return res.json(project);
 });
 
-app.put('/projects/:id', (req, res) => {
+app.put('/projects/:id', validateProjectId, (req, res) => {
 
     const { id } = req.params;
     const { title, owner } = req.body;
@@ -66,7 +99,7 @@ app.put('/projects/:id', (req, res) => {
     return res.json(project);
 });
 
-app.delete('/projects/:id', (req, res) => {
+app.delete('/projects/:id', validateProjectId, (req, res) => {
 
     const { id } = req.params;
 
