@@ -1,9 +1,10 @@
 const express = require('express');
 const { uuid, isUuid } = require('uuidv4')
-
+const cors = require('cors');
 const app = express();
 
 // add function to routes have to be before the routes
+app.use(cors());
 app.use(express.json());
 
 /** CONCEITOS */
